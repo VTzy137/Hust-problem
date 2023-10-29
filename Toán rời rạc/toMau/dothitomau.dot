@@ -1,0 +1,15 @@
+graph dothi
+{
+  1 [fillcolor="#247525", style=filled];
+  2 [fillcolor="#773122", style=filled];
+  3 [fillcolor="#247525", style=filled];
+  4 [fillcolor="#773122", style=filled];
+  5 [fillcolor="#242447", style=filled];
+  2 -- 1;
+  3 -- 2;
+  4 -- 1;
+  4 -- 3;
+  5 -- 1;
+  5 -- 2;
+  5 -- 3;
+}
