@@ -1,1 +1,1 @@
-# Hust code
+// hust code
