@@ -1,0 +1,15 @@
+1
+Weather
+Sunny;Rainy;Cloudy;Windy;Stormy;Snowy;
+2
+Sports
+Soccer;Basketball;Tennis;Swimming;Cycling;Running; 
+3
+Technology
+Smartphone;Laptop;Internet;Wi-Fi;GPS;Bluetooth;
+4
+Fruits
+Apple;Banana;Orange;Strawberry;Pineapple;Watermelon;
+5
+Transportation
+Car;Bicycle;Train;Plane;Boat;Helicopter;

@@ -1,0 +1,87 @@
+Sunny
+1
+Describing a weather condition with a clear sky and bright sunlight.
+Rainy
+1
+Describing a weather condition with precipitation in the form of rain.
+Cloudy
+1
+Describing a weather condition with a sky covered by clouds.
+Windy
+1
+Describing a weather condition with strong or gusty winds.
+Stormy
+1
+Describing a weather condition with severe thunderstorms, heavy rain, or strong winds.
+Snowy
+1
+Describing a weather condition with falling or accumulated snow.
+Soccer
+2
+A team sport played with a round ball between two teams, using feet to kick the ball and score goals.
+Basketball
+2
+A team sport played on a court with two teams shooting a ball through a hoop to score points.
+Tennis
+2
+A racket sport played between two individuals or teams on a court, hitting a ball back and forth over a net.
+Swimming
+2
+A water-based sport that involves propelling oneself through water using arms and legs.
+Cycling
+2
+The activity or sport of riding a bicycle, often for leisure, exercise, or competition.
+Running
+2
+The act of moving swiftly on foot, typically at a faster pace than walking. 
+Smartphone
+3
+A mobile phone that combines computing functions with communication capabilities. 
+Laptop
+3
+A portable computer that is small and lightweight, designed for use on the go. Internet: A global network that connects computers worldwide, allowing information sharing and communication.
+Wi-Fi
+3
+A wireless networking technology that allows devices to connect to the internet without using cables.
+GPS
+3
+Global Positioning System, a satellite-based navigation system that provides location and time information.
+Bluetooth
+3
+A wireless technology that allows devices to exchange data over short distances
+Apple
+4
+A round or elongated fruit with a crisp or juicy flesh and typically red, green, or yellow skin.
+Banana
+4
+An elongated curved fruit with a soft flesh and yellow skin.
+Orange
+4
+A round citrus fruit with a tough bright orange skin and juicy segmented flesh.
+Strawberry
+4
+A small juicy red fruit with tiny seeds on the surface.
+Pineapple
+4
+A tropical fruit with a tough spiky rind and sweet yellow flesh.
+Watermelon
+4
+A large melon with a hard green rind and juicy red or yellow flesh. 
+Car
+5
+A motor vehicle with four wheels, typically used for personal transportation.
+Bicycle
+5
+A two-wheeled vehicle powered by pedals, used for exercise or transportation.
+Train
+5
+A long metal vehicle that runs on tracks, carrying people or goods from one place to another.
+Plane
+5
+A powered flying vehicle with fixed wings and a weight greater than that of the air it displaces.
+Boat
+5
+A small to medium-sized watercraft used for recreational purposes or transportation on water.
+Helicopter
+5
+A type of aircraft that uses rotating blades to lift off and land vertically.
