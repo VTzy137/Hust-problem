@@ -1,46 +1,30 @@
-#include<iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
-/*
-Author: Nguyễn Văn Trường, 
-MSSV: 20215495,
-Mã lớp 727637.
-*/
-struct node{
-    int value = 0;
-    int streak = 1;
-    node *next = NULL;
-};
-
+int s[10000] = {};
 int main(){
-    // file test12.txt chua test case 4
-    // freopen("test12.txt", "r", stdin);
-    node *p = new node;
-    p->next = new node;
-    int n, temp, area = 0;
-    cin >> n >> p->value;
-    for(int i = 1; i < n; ++i){
-        scanf("%d", &temp);
-        int st = p->streak;
-        while(p->value > temp){
-            area = max(area, p->value * st);
-            p = p->next;
-            st += p->streak;
+    int n, x, mx = 0, *p = s + 2;
+    scanf("%d", &n);
+    while(n--){
+        scanf("%d", &x);
+        int st = 0;
+        while(*p > x){
+            st += *(p + 1);
+            mx = max(mx, *p * st);
+            p -= 2;
         }
-        if(p->value == temp)
-            p->streak = 1 + st;
+        if(*p == x){
+            *(p + 1) += ++st;
+        }
         else{
-            node *q = new node;
-            q->value = temp;
-            q->streak = st - p->streak + 1;
-            q->next = p;
-            p = q;
+            p += 2;
+            *p = x;
+            *(p + 1) = ++st;   
         }
     }
-    area = max(area, p->value * p->streak);
-    while(p->next != NULL){
-        p = p->next;
-        max(area, p->value * p->streak);
+    while(*p){
+        mx = max(mx, *p * *(p + 1));
+        *(p - 1) += *(p + 1);
+        p -= 2;
     }
-    cout << area;
+    printf("%d", mx);
 }
