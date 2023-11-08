@@ -5,16 +5,24 @@ bool a1[1000][2], b1[1000][2];
 
 void ktra(int at, int bt){
     if(at == 0)
-        if(a1[bt][0]) return;
-        else a1[bt][0] = true;
+        if(a1[bt][0]) 
+            return;
+        else 
+            a1[bt][0] = true;
     else if(at == a)
-        if(a1[bt][1]) return;
-        else a1[bt][1] = true;
+        if(a1[bt][1]) 
+            return;
+        else 
+            a1[bt][1] = true;
     else if(bt == 0)
-        if(b1[at][0]) return;
-        else b1[at][0] = true;
-    else if(b1[at][1]) return;
-    else b1[at][1] = true;
+        if(b1[at][0]) 
+            return;
+        else 
+            b1[at][0] = true;
+    else if(b1[at][1])
+        return;
+    else
+        b1[at][1] = true;
     bfs[++k][0] = at;
     bfs[k][1] = bt;
     bfs[k][2] = bfs[p][2] + 1;
