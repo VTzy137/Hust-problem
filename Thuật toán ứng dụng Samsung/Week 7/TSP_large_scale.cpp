@@ -1,5 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
+struct node{
+	int index;
+	node *next=0, *sub=0;
+	node(int i = 0){
+		index = i;
+	}
+};
+struct tt{
+	int cp;
+	int s[101];
+};
 struct edges{
     int i, j, c = 0;
     edges(int i1, int j1, int c1 = 0){
@@ -8,10 +19,47 @@ struct edges{
         c = c1;
     }
 };
+node *root;
+tt *state[2000];
 edges *s[500001]; // luu ds canh do dai tu nho den lon 
 int n, edge = -1, c[1001][1001] = {}, seq[1001] = {}; // luu cac canh va luu thu tu thanh pho tham
-int k = -1, ci = 1, x[1001] = {}, x1[1001] = {}, pa[1001]= {}, deep[1001] = {};
+int stt = 1, bonus, k = -1, ci = 1, x[1001] = {}, x1[1001] = {}, pa[1001]= {}, deep[1001] = {};
 bool vi[1001] = {};
+
+int chi_phi(){
+	int cp = 0;
+	for(int i = 0; i < n; ++i)
+		cp += c[seq[i]][seq[i+1]];
+	return cp;
+}
+
+bool addnode(){
+	node *tmp = root;
+	int i = 1;
+	while(1){
+		while(tmp->next){
+			if(tmp->index == seq[i])
+				break;
+			tmp = tmp->next;
+		}
+		if(tmp->index == seq[i]){
+			++i;
+			tmp = tmp->sub;
+		}
+		else
+			break;
+	}
+	if(i >= n)
+		return false;
+	tmp->next = new node(seq[i++]);
+	tmp = tmp->next;
+	for(i; i < n; i++){
+		tmp->sub = new node(seq[i]);
+		tmp = tmp->sub;
+	}
+	tmp->sub = new node();
+	return true;
+}
 
 void doi_canh_2_chieu(){
 	int ll = 7;
@@ -90,38 +138,30 @@ void doi_dinh(){
 }
 
 void doi_canh_1_chieu(){
-	int test = 10;
-	while(test--){
-		for(int j = 1; j < n; ++j){
-			int tmp1 = c[seq[j-1]][seq[j]];
-			for(int k = j; k < n; ++k){
-				for(int i = 0; i < n; ++i){
-					if(i >= j-1 && i <= k)
-						continue;
-					if(c[seq[i]][seq[i+1]] + c[seq[j-1]][seq[j]] + c[seq[k]][seq[k+1]] > c[seq[i]][seq[j]] + c[seq[k]][seq[i+1]] + c[seq[j-1]][seq[k+1]]){
-						int temp_seq[k-j+1];
-						if(i < j){
-							for(int l = 0; l <= k-j; ++l){
-								temp_seq[l] = seq[j+l];
-							}
-							for(int l = k; l > i+(k+1-j); --l){
-								seq[l] = seq[l-(k-j+1)];
-							}
-							for(int l = 0; l <= k-j; ++l){
-								seq[i+l+1] = temp_seq[l];
-							}
-						}
-						else if(test < 5){
-							for(int l = 0; l <= k-j; ++l){
-								temp_seq[l] = seq[j+l];
-							}
-							for(int l = j; l < i-(k-j); ++l){
-								seq[l] = seq[l+(k-j+1)];
-							}
-							for(int l = 0; l <= k-j; ++l){
-								seq[i+l-(k-j)] = temp_seq[l];
-							}
-						}
+	for(int j = 1; j < n; ++j){
+		for(int k = j; k < n; ++k){
+			for(int i = 0; i < j-1; ++i){
+				if(c[seq[i]][seq[i+1]] + c[seq[j-1]][seq[j]] + c[seq[k]][seq[k+1]] + bonus > c[seq[i]][seq[j]] + c[seq[k]][seq[i+1]] + c[seq[j-1]][seq[k+1]]){
+					int temp_seq[k-j+1], cur_seq[101];
+					for(int l = 0; l <= n; ++l)
+						cur_seq[l] = seq[l];
+					if(i < j){
+						for(int l = 0; l <= k-j; ++l)
+							temp_seq[l] = seq[j+l];
+						for(int l = k; l > i+(k+1-j); --l)
+							seq[l] = seq[l-(k-j+1)];
+						for(int l = 0; l <= k-j; ++l)
+							seq[i+l+1] = temp_seq[l];
+					}
+					if(addnode()){
+						tt *tmp = new tt(); 
+						tmp->cp = chi_phi();
+						for(int l = 0; l <= n; ++l)
+							tmp->s[l] = seq[l];
+						for(int l = 0; l <= n; ++l)
+							seq[l] = cur_seq[l];
+						delete state[++stt];
+						state[stt] = tmp;
 					}
 				}
 			}
@@ -205,9 +245,6 @@ void cay_khung_2_chieu(){
 }
 
 void cay_khung_1_chieu(){
-	sort(s, s + ++edge, [](edges *a, edges *b)->bool{
-		return a->c < b->c;
-	});
 	pa[1] = 1;
 	while(ci < n){
 		int u = s[++k]->i, v = s[k]->j, tmp = u, kt = 0;
@@ -243,8 +280,6 @@ void cay_khung_1_chieu(){
 		tmp = x1[tmp];
 	}
 	seq[++k] = 1;
-	doi_dinh();
-	doi_canh_1_chieu();
 }
 
 void A_algorithm(){
@@ -277,15 +312,6 @@ void A_algorithm(){
 			seq[++k] = next;
 		visited[next] = 1;
 	}
-	doi_dinh();
-	doi_canh_1_chieu();
-}
-
-int chi_phi(){
-	int cp = 0;
-	for(int i = 0; i < n; ++i)
-		cp += c[seq[i]][seq[i+1]];
-	return cp;
 }
 
 int main(){
@@ -299,24 +325,85 @@ int main(){
 				s[++edge] = new edges(i, j, c[i][j]);
 		}
 	}
-	
 	if(n > 100){
 		// duyet duong di theo cay khung
 		cay_khung_2_chieu();
 	}
 	else{
-		int cp = 1e6, seq1[101];
-		cay_khung_1_chieu();
-		cp = chi_phi();
-		for(int i=0; i<=n; ++i)
-			seq1[i] = seq[i];
-		A_algorithm();
-		if(chi_phi() > cp){
-			for(int i=0; i<=n; ++i)
-				seq[i] = seq1[i];
+		root = new node();
+		sort(s, s + ++edge, [](edges *a, edges *b)->bool{
+			return a->c < b->c;
+		});
+		for(int i=0; i<1000; ++i){
+			state[i] = new tt();
+			state[i]->cp = 1e6;
 		}
+		for(int i = 0; i < 10; ++i){
+			ci = 1;
+			k = -1;
+			cay_khung_1_chieu();
+			tt *tmp = new tt(); 
+			tmp->cp = chi_phi();
+			for(int l = 0; l <= n; ++l)
+				tmp->s[l] = seq[l];
+			delete state[++stt];
+			state[stt] = tmp;
+			for(int j = 0; j <= n; ++j){
+				x[j] = 0;
+				x1[j] = 0;
+				pa[j] = 0;
+			}
+			for(int j = 0; j < 1000; ++j){
+				int v1 = rand() % (2 * n) + 1, v2 = rand() % (2 * n) + 1;
+				edges *tmp = s[v1];
+				s[v1] = s[v2];
+				s[v2] = tmp;
+			}
+		}
+		A_algorithm();
+		tt *tmp = new tt(); 
+		tmp->cp = chi_phi();
+		for(int l = 0; l <= n; ++l)
+			tmp->s[l] = seq[l];
+		delete state[++stt];
+		state[stt] = tmp;
+		sort(state, state + 1000, [](tt *a, tt *b)->bool{
+			return a->cp < b->cp;
+		});
+		int test = (11-n/10) * 100;
+		stt = 15;
+		bonus = 5;
+		int cpmin = 1e6, toiuu[101];
+		while(test--){
+			for(int i=0; i < 10; ++i){
+				if(state[i]->cp == 1e6)
+					break;
+				for(int j=0; j<=n; ++j)
+					seq[j] = state[i]->s[j];
+				doi_canh_1_chieu();
+				if(cpmin > state[i]->cp){
+					cpmin = state[i]->cp;
+					for(int j=0; j<=n; ++j)
+						toiuu[j] = state[i]->s[j];
+				}
+				state[i]->cp = 1e6;
+			}
+			sort(state, state + 1000, [](tt *a, tt *b)->bool{
+				return a->cp < b->cp;
+			});
+			stt = 200;
+			bonus = max(1, cpmin / 60);
+		}
+		for(int i=0; i < 1000; ++i)
+			if(cpmin > state[i]->cp){
+				cpmin = state[i]->cp;
+				for(int j=0; j<=n; ++j)
+					toiuu[j] = state[i]->s[j];
+			}
+		for(int j=0; j<=n; ++j)
+			seq[j] = toiuu[j];
 	}
-		
+	
     cout << n << endl;
 	for(int i = 0; i < n; ++i)
 		cout << seq[i] << " ";
