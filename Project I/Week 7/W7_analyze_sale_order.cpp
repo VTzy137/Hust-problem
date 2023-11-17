@@ -13,7 +13,7 @@ int time_to_int(char *s){
     return (*s * 10 + *(s+1)) * 3600 + (*(s+3) * 10 + *(s+4)) * 60 + *(s+6) * 10 + *(s+7) - 1933008;
 }
 
-int cs[1001][1001] = {}, m[1001], p[86401] = {}, f[86401];
+int cs[1001][1001] = {}, m[1001], p[86401] = {};
 
 int main(){
     int sl = 0, cost = 0, r;
@@ -28,10 +28,8 @@ int main(){
         p[time_to_int(x)] += r;
         scanf("%s", query);
     }
-    for(int i = 1; i < 86401; ++i){
+    for(int i = 1; i < 86401; ++i)
         p[i] += p[i-1];
-        f[i] = cost - p[i];
-    }
 
     scanf("%s", query);
     while(query[0] != '#'){
@@ -40,7 +38,7 @@ int main(){
                 printf("%d\n", cost);
             else{
                 scanf("%s%s", x, s);
-                printf("%d\n", cost - p[time_to_int(x) - 1] - f[time_to_int(s)]);
+                printf("%d\n", p[time_to_int(s)] - p[time_to_int(x) - 1]);
             }
         }
         else if(query[7] == 'c'){
