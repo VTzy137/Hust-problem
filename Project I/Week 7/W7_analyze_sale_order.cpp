@@ -1,49 +1,58 @@
 #include<bits/stdc++.h>
 using namespace std;
-int convert_int(string s){
-    int num = 0, j = s.length();
-    for(int i = 0; i < j; ++i)
-        if(s[i] < 58 && s[i] > 47) num = num * 10 + s[i] - 48; 
+
+int convert_int(char *s){
+    int num = 0;
+    char *i = s - 1;
+    while(*(++i) != 0)
+        if(*i < 58 && *i > 47) num = num * 10 + *i - 48; 
     return num;
 }
-int cus_shop[1001][1001] = {}, t[86401] = {}, t1[86401];
-map<string, int> m;
+
+int time_to_int(char *s){
+    return (*s * 10 + *(s+1)) * 3600 + (*(s+3) * 10 + *(s+4)) * 60 + *(s+6) * 10 + *(s+7) - 1933008;
+}
+
+int cs[1001][1001] = {}, m[1001], p[86401] = {}, f[86401];
+
 int main(){
-    // freopen("inputEcommerce.txt", "r", stdin);
-    // freopen("outputEcommerce.txt", "w", stdout);
-    int num_order = 0, total_reve = 0, r;
-    string c, p, s, x;
-    cin >> c;
-    while(c != "#"){
-        cin >> p >> r >> s >> x;
-        ++num_order;
-        total_reve += r;
-        cus_shop[convert_int(c)][convert_int(s)] += r;
-        m[s] += r;
-        t[(x[0]*10 + x[1])*3600 + (x[3]*10 + x[4])*60 + x[6]*10 + x[7] - 1933008] += r;
-        cin >> c;
+    int sl = 0, cost = 0, r;
+    char s[10], x[10], query[50];
+    scanf("%s", query);
+    while(query[0] != '#'){
+        scanf("%s%d%s%s", s, &r, s, x);
+        ++sl;
+        cost += r;
+        cs[convert_int(query)][convert_int(s)] += r;
+        m[convert_int(s)] += r;
+        p[time_to_int(x)] += r;
+        scanf("%s", query);
     }
     for(int i = 1; i < 86401; ++i){
-        t[i] += t[i-1];
-        t1[i] = total_reve - t[i];
+        p[i] += p[i-1];
+        f[i] = cost - p[i];
     }
 
-    cin >> s;
-    while(s != "#"){
-        if(s == "?total_revenue_in_period"){
-            cin >> s >> x;
-            printf("%d\n", total_reve - t[(s[0]*10 + s[1])*3600 + (s[3]*10 + s[4])*60 + s[6]*10 + s[7] - 1933009] - t1[(x[0]*10 + x[1])*3600 + (x[3]*10 + x[4])*60 + x[6]*10 + x[7] - 1933008]);
+    scanf("%s", query);
+    while(query[0] != '#'){
+        if(query[7] == 'r'){
+            if(query[14] == 0)
+                printf("%d\n", cost);
+            else{
+                scanf("%s%s", x, s);
+                printf("%d\n", cost - p[time_to_int(x) - 1] - f[time_to_int(s)]);
+            }
         }
-        else if(s == "?revenue_of_shop"){
-            cin >> s;
-            printf("%d\n", m[s]);
+        else if(query[7] == 'c'){
+            scanf("%s%s", x, s);
+            printf("%d\n", cs[convert_int(x)][convert_int(s)]);
         }
-        else if(s == "?total_consume_of_customer_shop"){
-            cin >> c >> s;
-            printf("%d\n", cus_shop[convert_int(c)][convert_int(s)]);
+        else if(query[7] == 'e'){
+            scanf("%s", s);
+            printf("%d\n", m[convert_int(s)]);
         }
-        else if(s == "?total_number_orders") printf("%d\n", num_order);
-        else if(s == "?total_revenue") printf("%d\n", total_reve);
-        cin >> s;
+        else if(query[7] == 'n')
+            printf("%d\n", sl);
+        scanf("%s", query);
     }
 }
