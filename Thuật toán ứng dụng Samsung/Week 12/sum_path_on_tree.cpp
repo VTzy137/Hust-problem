@@ -2,7 +2,6 @@
 using namespace std;
 vector<pair<int, int>> s[100001];
 int n, u, v, w, visited[100001] = {}, length[100001] = {}, subs[100001] = {}, mx = 0;
-
 void cal(int k){
 	mx = max(length[k], mx);
 	visited[k] = false;
@@ -12,7 +11,6 @@ void cal(int k){
 			cal(i.first);
 		}
 }
-
 void come(int k){
 	visited[k] = true;
 	for(pair<int, int> i : s[k])
@@ -22,7 +20,6 @@ void come(int k){
 			length[k] += length[i.first] + (subs[i.first] + 1) * i.second;
 		}
 }
-
 int main(){
 	cin >> n;
 	for(int i = 1; i < n; i++){

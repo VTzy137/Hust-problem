@@ -4,7 +4,6 @@ vector<pair<int, int>> s[100001];
 int n, u, v, w, mx;
 int  x[100001][2] = {};
 bool visited[100001] = {};
-
 int find(int x0){
 	for(int i = 0; i <= n; ++i){
 		visited[i] = false;
@@ -30,7 +29,6 @@ int find(int x0){
 	}
 	return x[j][0];
 }
-
 int main(){
 	cin >> n;
 	for(int i = 0; i < n; i++){

@@ -2,7 +2,6 @@
 using namespace std;
 vector<int> s[100001];
 int n, u, v, mx1[100001], mx0[100001] = {}, visited[100001] = {};
-
 void come(int k){
 	visited[k] = 1;
 	for(int i : s[k])
@@ -12,7 +11,6 @@ void come(int k){
 			mx1[k] += mx0[i];
 		}
 }
-
 int main(){
 	cin >> n;
 	for(int i = 1; i <= n; i++)
