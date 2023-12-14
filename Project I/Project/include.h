@@ -17,7 +17,7 @@ using namespace std;
 // Heuristic algorithm to improve objective function
 #include "heuristic.h"
 
-// 
+// Choose
 #include "local_beam.h"
 
 // Create quite good path 

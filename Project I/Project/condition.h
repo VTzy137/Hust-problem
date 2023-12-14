@@ -64,7 +64,7 @@ void add_path(int *sequence){
 	if(check_path(sequence)){
 
 		// If path not exist, add it as a state
-		status *temp = state[++stt];
+		status *temp = state[--stt];
 		temp->cost = cal_cost(sequence);
 		for(int l = 0; l <= n; ++l){
 			temp->s[l] = sequence[l];

@@ -1,4 +1,5 @@
 
+// N
 struct node{
 	int index;
 	node *next = 0, *sub = 0;
@@ -7,6 +8,7 @@ struct node{
 	}
 };
 
+// Storage path as a state
 struct status{
 	int cost;
 	int s[1001];
@@ -15,11 +17,11 @@ struct status{
 //
 node *root;
 
-// 
+//
 status *state[20000];
 
 //
-int stt = 0;
+int stt = 0, ti = 10;
 
 //
 int n, weights[1001][1001] = {}, bestCost = 1e9, currCost = 0;

@@ -13,11 +13,17 @@ int main(){
         complete_search(1);
 	}
 
-	// 
+	// For large scale, must use more complicated algorithm
 	else{
+		
 		greedy_algorithm();
+
 		local_beam();
 	}
 
+        for(int l = 0; l <= n; l++){
+            currSeq[l] = bestSeq[l];
+        }
+		heuristic();
 	output();
 }

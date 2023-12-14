@@ -25,5 +25,5 @@ void initialize(){
 	currSeq[n] = 1;
 	root = new node();
 	root->index = 1;
-    stt = 0;
+    stt = 20000;
 }
