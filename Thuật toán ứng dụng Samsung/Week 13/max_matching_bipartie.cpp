@@ -13,21 +13,18 @@ bool findPath(int u){
     return false;
 }
 int main(){
-    int n, m, number = 0;
+    int n, m, i, j, k, number = 0;
     cin >> n >> m;
-    for(int i = 1; i <= n; i++){
-        int j, tmp;
+    for(i = 1; i <= n; ++i){
         scanf("%d", &j);
         while(j--){
-            scanf("%d", &tmp);
-            s[i].push_back(tmp);
+            scanf("%d", &k);
+            s[i].push_back(k);
         }
     }
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= m; j++) come[j] = true;
-        if(!visited[i]) findPath(i);
+    for(i = 1; i <= n; ++i){
+        for(j = 1; j <= m; ++j) come[j] = true;
+        if(!visited[i] && findPath(i)) number++;
     }
-    for(int j = 1; j <= m; j++)
-        if(connect[j]) number++;
     cout << number;
 }
