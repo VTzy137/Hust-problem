@@ -21,7 +21,7 @@ node *root;
 status *state[20000];
 
 //
-int stt = 0, ti = 10;
+int stt = 0, t = 10;
 
 //
 int n, weights[1001][1001] = {}, bestCost = 1e9, currCost = 0;

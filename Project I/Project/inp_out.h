@@ -1,10 +1,11 @@
 
 void input(){
-	// cin >> n;
-	// if(n == 15)
-	cin >> ti;
-		const char *str1 = "inp100.txt";
-    freopen(str1, "r", stdin);
+	cout << "Choose the number of points: ";
+	cin >> n;
+	string s = "inp" + to_string(n) + ".txt";
+	cout << "Choose time limit: ";
+	cin >> t;
+    freopen(&s[0], "r", stdin);
 
 	// Input the weights from i th point to j th point (complete graph with n points)
 	cin >> n;

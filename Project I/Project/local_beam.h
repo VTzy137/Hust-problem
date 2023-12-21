@@ -17,7 +17,7 @@ void local_beam(){
         heuristic(2 + state[i]->cost / 150);
         state[i]->cost = 1e6;
         // cout << bestCost << " " << stt << endl;
-        if(test > 20){
+        if(test > 20 || t > 5){
             a = 100;
         }
         if(stt < i + 5000 || test % a == 0){
@@ -28,7 +28,7 @@ void local_beam(){
             });
         }
     	endTSP = clock();
-        if(endTSP - startTSP > ti * 1000)
+        if(endTSP - startTSP > t * 1000)
             break;
     }
 
