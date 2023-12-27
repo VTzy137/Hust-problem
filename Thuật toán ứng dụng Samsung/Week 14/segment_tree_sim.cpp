@@ -19,8 +19,7 @@ int main(){
     while(m--){
         string s;
         cin >> s >> i >> j;
-        if(s[0] == 'g')
-            cout << getNode(1, 1, n2) << endl;
+        if(s[0] == 'g') cout << getNode(1, 1, n2) << endl;
         else if(s[0] == 'u'){
             i += n2-1;
             a[i] = j;
