@@ -3,9 +3,8 @@ using namespace std;
 
 int x[9][9]= {}, n[9][10]= {}, d[9][10]= {}, o[3][3][10]= {}, co = 0;
 bool ktra(int val, int i, int j){
-	if(n[i][val] == 0 && d[j][val] == 0 && o[i/3][j/3][val] == 0){
+	if(n[i][val] == 0 && d[j][val] == 0 && o[i/3][j/3][val] == 0)
 		return true;
-	}
 	else
 		return false;
 }
