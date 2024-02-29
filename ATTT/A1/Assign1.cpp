@@ -72,7 +72,7 @@ int main(){
             string kq = xoo(x[i], x[j]); 
             kq = bitToHex(kq);
             for(int k = 0; k < 166; k+=2){
-                if(kq[k] > '3'){
+                if(kq[k] > '3' || (kq[k] == '0' && kq[k+1] == '0')){
                     ++c[i][k];
                     ++c[j][k];
                 }
@@ -82,7 +82,7 @@ int main(){
 
     for(int k = 0; k < 166; k+=2){
         int i = 0;
-        for(int j = 1; j < 10; ++j){
+        for(int j = 1; j < 11; ++j){
             if(c[j][k] > c[i][k]) i = j;
         }
         string tmp;
