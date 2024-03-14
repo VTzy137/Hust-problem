@@ -1,5 +1,4 @@
-#include<bits/stdc++.h>
-using namespace std;
+#include<stdio.h>
 struct node{
 	int val;
 	node* next = NULL;
@@ -28,8 +27,8 @@ int main(){
 			int tmp = q;
 			while(p[tmp] > cMin) p[tmp--] = cMin;
 			node *temp = db[k];
-			p[++q] = a[k];
 			while(temp != 0){
+				p[++q] = a[k];
 				pq[temp->val] = q;
 				temp = temp->next;
 			}
