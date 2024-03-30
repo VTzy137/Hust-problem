@@ -10,6 +10,8 @@ void encrypt(int i){
         data += readLine + '\n';
     data.pop_back();
 
+    MyWriteFile << listIV[i][0] << " " << listIV[i][1] << '\n';
+
     for(int j : data){
         j ^= generate();
         MyWriteFile << j << " ";
@@ -24,10 +26,12 @@ void encrypt(int i){
 
 void decrypt(int i){
     clock_t start1 = clock();
-    setReg(i);
     MyReadFile.open("encrypt\\" + listFiles[i]);
     MyWriteFile.open("decrypt\\" + listFiles[i]);
 
+    MyReadFile >> listIV[i][0] >> listIV[i][1];
+    setReg(i);
+    
     int tmp;
     while(MyReadFile >> tmp){
         tmp ^= generate();
