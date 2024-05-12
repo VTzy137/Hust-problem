@@ -7,6 +7,7 @@ struct point{
 };
 
 point *start, *finish, *obstacle[1000], *initStart, *initFinish;
+// vector<point*> obstacle[1000];
 int mapHeight, mapWidth, numObstacle;
 int graphStatus[1000][1000] = {};
 
@@ -94,6 +95,7 @@ void markPointNotCome(double x, double y){
 }
 
 void markLineNotCome(point *p, point *q){
+    cout << p->x << " " << p->y << " " << q->x << " " << q->y << endl;
     double xBegin = p->x, yBegin = p->y, dis = euclideanDistance(p, q);
     double cos = (q->x-xBegin)/dis, sin = (q->y-yBegin)/dis;
     for(double j = 0; j < dis+1; ++j){
@@ -112,6 +114,8 @@ void markObstacle(){
         q = obstacle[i];
         markLineNotCome(p, q);
     }
+    graphStatus[(int)start->x][(int)start->y] = 0;
+    graphStatus[(int)finish->x][(int)finish->y] = 0;
 }
 
 void smoothObstacle(){
