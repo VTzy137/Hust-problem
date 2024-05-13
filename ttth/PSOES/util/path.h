@@ -41,6 +41,14 @@ bool checkValidPoint(int x, int y){
     return true;
 }
 
+bool checkValidLine(point *p, point *q){
+    double xBegin = p->x, yBegin = p->y, dis = euclideanDistance(p, q);
+    double cos = (q->x-xBegin)/dis, sin = (q->y-yBegin)/dis;
+    for(double j = 0; j <= dis; ++j)
+        if(checkValidPoint((int) xBegin+j*cos, (int) yBegin+j*sin) == false) return false;
+    return true;
+}
+
 double angleVector(point *p1, point *p2){
     return atan(p2->y - p1->y / p2->x - p1->x);
 }

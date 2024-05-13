@@ -5,18 +5,25 @@ using namespace std;
 #include "util/agorithm.h"
 int main(){
     clock_t startt = clock();
-    inputGraph(2);
+    inputGraph(1);
     freopen("out.txt", "w", stdout);
     changeToNewGraph();
 
     markObstacle();
 
     aStar();
-    
-    setPathFromAstar();
+    // pathFunc(astarRes);
+    // cout << astarRes->angle << endl;
+
     pathLen = pathLength(astarRes);
+    while(pathLen > 60+numObstacle*2) {
+        decreaseDimension(astarRes);
+        pathLen = pathLength(astarRes);
+    }
+    setPathFromAstar();
     // cout << endl;
     resetGraphStatus();
+    cout << -1 << endl;
     // astarRes = mutation(astarRes, 100);
     // astarRes = combination1(astarRes, population[0]);
     // astarRes = mutation(astarRes, 50);
@@ -27,8 +34,9 @@ int main(){
     for(int i = 0; i < estime; ++i) {
         // est = 2 - i * 1.0 / estime;
         // ES(60.0*(i+estime)/estime);
-        ES(100.0);
+        ES(70.0);
     }
+    cout << pathLen <<endl;
     // cout << astarRes->angle << " " << astarRes->distance << " " << gPath->angle << " " << gPath->distance << endl;
     // cout << compareTwoPath(astarRes, gPath) << endl << endl;
     astarRes = gPath;

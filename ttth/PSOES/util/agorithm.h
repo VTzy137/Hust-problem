@@ -31,7 +31,7 @@ path* aStar(){
     findSolution:
     path *res = new path(gDistance[xFinish][yFinish], 0, nullptr);
     point *p = new point((double) xFinish, (double) yFinish, nullptr);
-    int stop = 100;
+    int stop = 300;
     while(--stop > 0){
         int tmp = graphStatus[xFinish][yFinish];
         xFinish = tmp / 1000;
@@ -48,6 +48,14 @@ path* aStar(){
 path *currPath, *gPath, *pPath[1000], *population[1000];
 double w1, w2, w0, v[1000][1000] = {};
 int numPopulations = 2, populationMax = 100, dim = 0;
+
+void decreaseDimension(path *p) {
+    point *q = p->begin;
+    while(q->next != nullptr && q->next->next != nullptr) {
+        q->next = q->next->next;
+        q = q->next;
+    }
+}
 
 path* makeCopyPath(path *p) {
     point *p1 = p->begin, *q1 = new point(p1->x, p1->y, nullptr);
@@ -136,7 +144,8 @@ path* mutation(path *p, double toiu){
     while(tmp->next != nullptr) {
         double wei = 1 - min(1.0, abs(stt++ - posPoint) / keke);
         offPoint->next = new point(tmp->x + x1 * wei, tmp->y + y1 * wei, nullptr);
-        if(checkValidPoint(offPoint) == false) return p;
+        if(checkValidLine(offPoint, offPoint->next) == false) return p;
+        // if(checkValidPoint(offPoint) == false || checkValidPoint((int)(tmp->x+x1*wei/2),(int)(tmp->y + y1*wei/2)) == false) return p;
         offPoint = offPoint->next;
         tmp = tmp->next;
     }
