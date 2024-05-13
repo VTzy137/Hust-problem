@@ -5,7 +5,7 @@ using namespace std;
 #include "util/agorithm.h"
 int main(){
     clock_t startt = clock();
-    inputGraph(1);
+    inputGraph(2);
     freopen("out.txt", "w", stdout);
     changeToNewGraph();
 
@@ -14,7 +14,7 @@ int main(){
     aStar();
     
     setPathFromAstar();
-
+    pathLen = pathLength(astarRes);
     // cout << endl;
     resetGraphStatus();
     // astarRes = mutation(astarRes, 100);
@@ -23,8 +23,9 @@ int main(){
     // astarRes = mutation(astarRes, 50);
     // astarRes = combination1(astarRes, population[0]);
     // astarRes = mutation(astarRes, 50);
-    int estime = 500;
+    int estime = 50000;
     for(int i = 0; i < estime; ++i) {
+        // est = 2 - i * 1.0 / estime;
         // ES(60.0*(i+estime)/estime);
         ES(100.0);
     }
@@ -46,7 +47,9 @@ int main(){
     //     }
     //     cout << endl;
     // }
-    
+    // double keke = rand() % 100 / 10.0, x1 = (rand() % 200 - 100) / (100.0 ), y1 = (rand() % 200 - 100) / (100.0), stt = 0, posPoint = rand() % pathLen;
+    // cout << x1 << " " << y1 << " " << posPoint << " " << endl;
+    //     double wei = 1 - pow(abs(1 - posPoint) / kk; cout << "wei " << wei << endl;
     // PSOES();
     
     changeToInitGraph();

@@ -47,7 +47,7 @@ path* aStar(){
 
 path *currPath, *gPath, *pPath[1000], *population[1000];
 double w1, w2, w0, v[1000][1000] = {};
-int numPopulations = 100, populationMax = 100, dim = 0;
+int numPopulations = 2, populationMax = 100, dim = 0;
 
 path* makeCopyPath(path *p) {
     point *p1 = p->begin, *q1 = new point(p1->x, p1->y, nullptr);
@@ -126,14 +126,16 @@ void PSO(){
 //     return offspring;
 // }
 
+int pathLen;
+double est = 1.5;
 path* mutation(path *p, double toiu){
     point *tmp = p->begin, *offPoint = new point(tmp->x, tmp->y, nullptr);
     path *offspring = new path(offPoint);
     tmp = tmp->next;
-    double x1 = (rand() % 200 - 100) / toiu, y1 = (rand() % 200 - 100) / toiu, stt = 0, posPoint = rand() % 30;
+    double keke = rand() % (int)(pathLen*est/5), x1 = (rand() % 200 - 100) / (toiu ), y1 = (rand() % 200 - 100) / (toiu), stt = 0, posPoint = rand() % pathLen;
     while(tmp->next != nullptr) {
-        double wei = max(0.5, abs(stt++ - posPoint));
-        offPoint->next = new point(tmp->x + x1 / wei, tmp->y + y1 /wei, nullptr);
+        double wei = 1 - min(1.0, abs(stt++ - posPoint) / keke);
+        offPoint->next = new point(tmp->x + x1 * wei, tmp->y + y1 * wei, nullptr);
         if(checkValidPoint(offPoint) == false) return p;
         offPoint = offPoint->next;
         tmp = tmp->next;
@@ -186,8 +188,8 @@ void ES(double toiu){
     for(int i = 0; i < numPopulations; ++i) {
         path *tmp = mutation(population[i], toiu);
         if(compareTwoPath(tmp, population[i]) > 0){
-            population[i] = tmp;
-            population[i] = combination1(population[i], pPath[i]);
+            population[i] = combination1(tmp, pPath[i]);
+            // population[i] = tmp;
         }
         // population[i] = combination1(population[i], gPath);
     }

@@ -47,7 +47,7 @@ double angleVector(point *p1, point *p2){
 
 double compareTwoPath(path *a, path *b) {
     // return b->angle - a->angle + b->distance - a->distance;
-    return 2 * (b->angle - a->angle) / b->angle + (b->distance - a->distance) / b->distance;
+    return (b->angle - a->angle) / b->angle + 3 * (b->distance - a->distance) / b->distance;
 }
 
 // int compareTwoPath(path *a, path *b) {
@@ -55,12 +55,23 @@ double compareTwoPath(path *a, path *b) {
 //     return a->distance < b->distance;
 // }
 
+int pathLength(path *p) {
+    point *p1 = p->begin;
+    int len = 0;
+    while(p1 != nullptr) {
+        p1 = p1->next;
+        ++len;
+    }
+    return len;
+}
+
 void pathFunc(path *path){
     // cout << "cc";
     point *p = path->begin, *p1 = p->next;
     double x = p1->x - p->x, y = p1->y - p->y;
     double z = sqrt(x*x + y*y);
     double distance = z, angle = 0, pastAngle = acos(x/z) * (y >= 0 ? 1 : -1), currAngle;
+    int i = 0;
     while(p->next != nullptr){
         p1 = p->next;
         x = p1->x - p->x;
@@ -68,7 +79,7 @@ void pathFunc(path *path){
         z = sqrt(x*x + y*y);
         distance += z;
         currAngle = 100 * acos(x/z) * (y >= 0 ? 1 : -1);
-        angle += pow(currAngle - pastAngle, 2);
+        if(i++ != 0) angle += pow(currAngle - pastAngle, 2);
         pastAngle = currAngle;
         p = p1;
         // cout << angle << " ";
