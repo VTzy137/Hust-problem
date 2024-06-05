@@ -17,27 +17,27 @@ double distanceToFinish(double x, double y) {
 bool checkValidPosition(point *p){
     int x = p->x, y = p->y;
     if(x < 0 || y < 0 || x > mapHeight || y > mapWidth) return false;
-    if(graphStatus[x][y] != 0 || graphStatus[x+1][y] != 0 || graphStatus[x][y+1] != 0 || graphStatus[x+1][y+1] != 0) return false;
+    if(graphStatus[x][y] > 900000 || graphStatus[x+1][y] > 900000 || graphStatus[x][y+1] > 900000 || graphStatus[x+1][y+1] > 900000) return false;
     return true;
 }
 
 bool checkValidPosition(double x1, double y1){
     int x = x1, y = y1;
     if(x < 0 || y < 0 || x > mapHeight || y > mapWidth) return false;
-    if(graphStatus[x][y] != 0 || graphStatus[x+1][y] != 0 || graphStatus[x][y+1] != 0 || graphStatus[x+1][y+1] != 0) return false;
+    if(graphStatus[x][y] > 900000 || graphStatus[x+1][y] > 900000 || graphStatus[x][y+1] > 900000 || graphStatus[x+1][y+1] > 900000) return false;
     return true;
 }
 
 bool checkValidPoint(point *p){
     int x = p->x, y = p->y;
     if(x < 0 || y < 0 || x > mapHeight || y > mapWidth) return false;
-    if(graphStatus[x][y] != 0) return false;
+    if(graphStatus[x][y] > 900000) return false;
     return true;
 }
 
 bool checkValidPoint(int x, int y){
     if(x < 0 || y < 0 || x > mapHeight || y > mapWidth) return false;
-    if(graphStatus[x][y] != 0) return false;
+    if(graphStatus[x][y] > 900000) return false;
     return true;
 }
 
@@ -108,7 +108,8 @@ void pathFunc1(path *path){
         y = p1->y - p->y;
         z = sqrt(x*x + y*y);
         distance += z;
-        currAngle = 10 * acos(x/z) * (y >= 0 ? 1 : -1);
+        distance += max(0, graphStatus[(int)p1->x][(int)p1->y]-500000);
+        currAngle = acos(x/z) * (y >= 0 ? 1 : -1);
         cout << currAngle << " " << (x/z) << endl;
         angle += pow(currAngle - pastAngle, 2);
         pastAngle = currAngle;

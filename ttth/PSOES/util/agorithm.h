@@ -1,7 +1,7 @@
-int nearPoint[8][2] = {{1, 0}, {0, 1}, {1, 1}, {-1, 1}, {1, -1}, {0, -1}, {-1, 0}, {-1, -1}};
 
 typedef pair<double, pair<int, int>> pairDistance;
 double gDistance[1000][1000] = {};
+int visited[1000][1000] = {};
 path* astarRes;
 path* aStar(){
     set<pairDistance> aStar;
@@ -17,8 +17,8 @@ path* aStar(){
         for(int i = 0; i < 8; ++i) {
             x += nearPoint[i][0];
             y += nearPoint[i][1];
-            if(checkValidPoint(x, y)){
-                graphStatus[x][y] = past;
+            if(visited[x][y] == 0 && checkValidPoint(x, y)){
+                visited[x][y] = past;
                 gDistance[x][y] = gDistance[x][y] + sqrt(abs(nearPoint[i][0]) + abs(nearPoint[i][1]));
                 aStar.insert(make_pair(gDistance[x][y] + distanceToFinish(x, y), make_pair(x, y)));
                 if(x == xFinish && y == yFinish) goto findSolution;
@@ -31,9 +31,9 @@ path* aStar(){
     findSolution:
     path *res = new path(gDistance[xFinish][yFinish], 0, nullptr);
     point *p = new point((double) xFinish, (double) yFinish, nullptr);
-    int stop = 300;
+    int stop = 1000;
     while(--stop > 0){
-        int tmp = graphStatus[xFinish][yFinish];
+        int tmp = visited[xFinish][yFinish];
         xFinish = tmp / 1000;
         yFinish = tmp % 1000;
         p = new point((double) xFinish, (double) yFinish, p);
@@ -46,8 +46,7 @@ path* aStar(){
 }
 
 path *currPath, *gPath, *pPath[1000], *population[1000];
-double w1, w2, w0, v[1000][1000] = {};
-int numPopulations = 2, populationMax = 100, dim = 0;
+int numPopulations = 5, populationMax = 100, pathLen;
 
 void decreaseDimension(path *p) {
     point *q = p->begin;
@@ -99,12 +98,31 @@ void updateBestPath(){
     }
 }
 
+double w0PSO = 0.5, w1PSO = 0.2, w2PSO = 0.05, v[1000][200][2] = {};
+void updateV(int i){
+    int j = 0;
+    point *p = population[i]->begin, *pp = pPath[i]->begin, *pn = gPath->begin;
+    while(p != nullptr) {
+        v[i][j][0] = w0PSO * v[i][j][0] + w1PSO * (pp->x - p->x) + w2PSO * (pn->x - p->x);
+        v[i][j][1] = w0PSO * v[i][j][1] + w1PSO * (pp->y - p->y) + w2PSO * (pn->y - p->y);
+        ++j;
+        p = p->next;
+        pp = pp->next;
+        pn = pn->next;
+    }
+}
+
+double wVPSO = 0.1;
 void PSO(){
     updateBestPath();
     for(int i = 0; i < numPopulations; i++) {
-        for(int j = 0; j < dim; ++j) {
-            ;
-        }   
+        updateV(i);
+        point *p = population[i]->begin;
+        for(int j = 0; j < pathLen; ++j) {
+            p->x += v[i][j][0] * wVPSO;
+            p->y += v[i][j][1] * wVPSO;
+            p = p->next;
+        }
     }
 }
 
@@ -134,24 +152,24 @@ void PSO(){
 //     return offspring;
 // }
 
-int pathLen;
-double est = 1.5;
+double est = 1.0;
 path* mutation(path *p, double toiu){
     point *tmp = p->begin, *offPoint = new point(tmp->x, tmp->y, nullptr);
     path *offspring = new path(offPoint);
     tmp = tmp->next;
-    double keke = rand() % (int)(pathLen*est/5), x1 = (rand() % 200 - 100) / (toiu ), y1 = (rand() % 200 - 100) / (toiu), stt = 0, posPoint = rand() % pathLen;
+    double keke = rand() % (int)(pathLen*est/4), x1 = (rand() % 200 - 100) / (toiu), y1 = (rand() % 200 - 100) / (toiu), stt = 0, posPoint = rand() % pathLen;
     while(tmp->next != nullptr) {
         double wei = 1 - min(1.0, abs(stt++ - posPoint) / keke);
         offPoint->next = new point(tmp->x + x1 * wei, tmp->y + y1 * wei, nullptr);
-        if(checkValidLine(offPoint, offPoint->next) == false) return p;
-        // if(checkValidPoint(offPoint) == false || checkValidPoint((int)(tmp->x+x1*wei/2),(int)(tmp->y + y1*wei/2)) == false) return p;
+        // if(checkValidLine(offPoint, offPoint->next) == false) return p;
+        if(checkValidPoint(offPoint) == false) return p;
         offPoint = offPoint->next;
         tmp = tmp->next;
     }
     offPoint->next = new point(tmp->x, tmp->y, nullptr);
     // offspring->begin = offspring->begin->next;
     pathFunc(offspring);
+            // cout << endl << "fidddd" << endl ;
     return offspring;
 }
 
@@ -208,20 +226,16 @@ void ES(double toiu){
     // }
 }
 
-void PSOES(){
+void PSOES(double toiu, int loop){
     // for(int i = 0; i < 1000; ++i) {
     //     v[i] = 1;
     // }
     
-
-    int loop = 1;
-    point *p = population[0]->begin;
-    while(p != nullptr){
-        ++dim;
-        p = p->next;
-    }
     for(int i = 0; i < loop; ++i) {
-        // ES();
+        est += 0.7/loop;
+        toiu += 30.0 / loop;
+        // if(i < loop/10) ES(toiu/10);
+        ES(toiu);
         PSO();
     }
 }
